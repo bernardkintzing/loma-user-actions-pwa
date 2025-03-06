@@ -105,7 +105,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
 );
 
 export const IconButton: React.FC<ButtonProps & { icon?: RemixIcon; _icon?: Omit<IconProps, "icon"> }> = ({ className, icon, _icon, ...props }) => (
-  <Button className={classFilter("group flex items-center justify-center p-0 md:p-0", className)} {...props}>
+  <Button className={classFilter("group flex items-center justify-center p-0", className)} {...props}>
     {icon && (
       <Icon
         {..._icon}
