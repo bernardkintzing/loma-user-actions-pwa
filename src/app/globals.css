@@ -3,25 +3,152 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* brand colors */
+  --blue-default: #446ce5;
+  --blue-default-rgb: 68 108 229;
+  --blue-contrast: #ffffff;
+  --blue-contrast-rgb: 255 255 255;
+  --blue-tone: #e3e6f2;
+  --blue-tone-rgb: 220 225 242;
+  /* supporting colors */
+  --grey-default: #c9c9cf;
+  --grey-default-rgb: 201 201 207;
+  --grey-contrast: #000000;
+  --grey-contrast-rgb: 0 0 0;
+  --grey-tone: #232323;
+  --grey-tone-rgb: 35 35 35;
+  /* theme colors */
+  --sunken-default: #e3e4e9;
+  --sunken-default-rgb: 227 228 233;
+  --sunken-tone: #232323;
+  --sunken-tone-rgb: 35 35 35;
+  --base-default: #ffffff;
+  --base-default-rgb: 255 255 255;
+  --base-tone: #232323;
+  --base-tone-rgb: 35 35 35;
+  --elevated-default: #f5f7f9;
+  --elevated-default-rgb: 245 247 249;
+  --elevated-tone: #232323;
+  --elevated-tone-rgb: 35 35 35;
+  --hover-default: #b8babf;
+  --hover-default-rgb: 184 186 191;
+  --selected-default: #cdced4;
+  --selected-default-rgb: 205 206 212;
+  --outline-default: #bcbcc1;
+  --outline-default-rgb: 188 188 193;
+  --contrast-primary: #000000;
+  --contrast-primary-rgb: 0 0 0;
+  --contrast-secondary: #1e1e1e;
+  --contrast-secondary-rgb: 30 30 30;
+  --contrast-tertiary: #393939;
+  --contrast-tertiary-rgb: 57 57 57;
+  --contrast-disabled: #545454;
+  --contrast-disabled-rgb: 84 84 84;
+  --table-head-color: #f5f7f9;
+  --table-head-color-rgb: 245 247 249;
+  --table-even-row-color: #f5f7f9;
+  --table-even-row-color-rgb: 245 247 249;
+  --table-odd-row-color: #ffffff;
+  --table-odd-row-color-rgb: 255 255 255;
+  --primary-default: var(--blue-default);
+  --primary-default-rgb: var(--blue-default-rgb);
+  --primary-contrast: var(--blue-contrast);
+  --primary-contrast-rgb: var(--blue-contrast-rgb);
+  --primary-tone: var(--blue-tone);
+  --primary-tone-rgb: var(--blue-tone-rgb);
+  --active-default: #0969da;
+  --active-default-rgb: 9 105 218;
+  --active-contrast: #000000;
+  --active-contrast-rgb: 0 0 0;
+  --active-tone: #e8eff8;
+  --active-tone-rgb: 232 239 248;
+  --error-default: #d24132;
+  --error-default-rgb: 210 65 50;
+  --error-contrast: #ffffff;
+  --error-contrast-rgb: 255 255 255;
+  --error-tone: #ffecea;
+  --error-tone-rgb: 255 236 234;
+  --success-default: #60a04f;
+  --success-default-rgb: 93 153 73;
+  --success-contrast: #ffffff;
+  --success-contrast-rgb: 255 255 255;
+  --success-tone: #efffea;
+  --success-tone-rgb: 239 255 234;
+  --warn-default: #c5ba3c;
+  --warn-default-rgb: 197 186 60;
+  --warn-contrast: #ffffff;
+  --warn-contrast-rgb: 255 255 255;
+  --warn-tone: #fffde1;
+  --warn-tone-rgb: 255 253 225;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme="dark"] {
+  /* supporting colors */
+  --grey-default: #2f2f2f;
+  --grey-default-rgb: 47 47 47;
+  --grey-contrast: #ffffff;
+  --grey-contrast-rgb: 255 255 255;
+  --grey-tone: #d1d0d0;
+  --grey-tone-rgb: 209 208 208;
+  /* theme colors */
+  --sunken-default: #0e1116;
+  --sunken-default-rgb: 14 17 22;
+  --sunken-tone: #d1d0d0;
+  --sunken-tone-rgb: 209 208 208;
+  --base-default: #000000;
+  --base-default-rgb: 0 0 0;
+  --base-tone: #d1d0d0;
+  --base-tone-rgb: 209 208 208;
+  --elevated-default: #0f1113;
+  --elevated-default-rgb: 15 17 19;
+  --elevated-tone: #d7dbe5;
+  --elevated-tone-rgb: 215 219 229;
+  --hover-default: #1b1f23;
+  --hover-default-rgb: 27 31 35;
+  --selected-default: #161a1e;
+  --selected-default-rgb: 22 26 30;
+  --outline-default: #4a4a4a;
+  --outline-default-rgb: 74 74 74;
+  --contrast-primary: #f6f6f6;
+  --contrast-primary-rgb: 246 246 246;
+  --contrast-secondary: #d5d8e0;
+  --contrast-secondary-rgb: 213 216 224;
+  --contrast-tertiary: #8b8f97;
+  --contrast-tertiary-rgb: 139 143 151;
+  --contrast-disabled: #71747b;
+  --contrast-disabled-rgb: 113 116 123;
+  --table-head-color: #0d0d0e;
+  --table-head-color-rgb: 12 14 19;
+  --table-even-row-color: #0f1113;
+  --table-even-row-color-rgb: 15 17 19;
+  --table-odd-row-color: #1b1f23;
+  --table-odd-row-color-rgb: 27 31 35;
+  --active-default: #2f81f7;
+  --active-default-rgb: 47 129 247;
+  --active-contrast: #000000;
+  --active-contrast-rgb: 0 0 0;
+  --active-tone: #eaeff7;
+  --active-tone-rgb: 234 239 247;
+  --error-default: #c9453c;
+  --error-default-rgb: 201 69 60;
+  --error-contrast: #ffffff;
+  --error-contrast-rgb: 255 255 255;
+  --error-tone: #fff0ef;
+  --error-tone-rgb: 255 240 239;
+}
+
+html {
+  font-size: 16px;
+  overscroll-behavior: none;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: var(--base-default);
+  color: var(--contrast-secondary);
 }
