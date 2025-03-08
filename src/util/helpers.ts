@@ -1,4 +1,11 @@
 import { isRealString } from "./validation";
+import { v4 } from "uuid";
+
+
+export const uuid = () => v4();
+
+export const domId = () => `loma-${uuid()}`;
+
 
 export const cleanPhoneNumber = (value: string) => value.replace(/\D/g, "");
 

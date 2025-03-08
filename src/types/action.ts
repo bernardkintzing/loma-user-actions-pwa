@@ -19,6 +19,7 @@ export type ActionDataOrganization = {
 
 export type ActionDataOpening = {
   openingId: string;
+  matchId: string;
   duration: number;
   services: AppointmentService[];
   datetime: SimpleTimestamp;

@@ -1,5 +1,5 @@
 import { classFilter } from "@/util/tailwind";
-import React, { HTMLAttributes, forwardRef } from "react";
+import React, { HTMLAttributes } from "react";
 import { Subtitle } from "./copy";
 
 export enum TileVariant {
@@ -41,5 +41,3 @@ export const LabeledTile: React.FC<LabeledTileProps> = ({ title, children, _top,
     </Tile>
   </div>
 );
-
-export const ForwardedTile = forwardRef<HTMLDivElement, TileProps>((props, ref) => <Tile innerRef={ref} {...props} />);

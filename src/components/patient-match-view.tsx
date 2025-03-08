@@ -1,13 +1,13 @@
 "use client";
 
-import { ActionDataPatient, OpeningMatchDataForTel } from "@/types/action";
+import { ActionDataOpening, ActionDataPatient, OpeningMatchDataForTel } from "@/types/action";
 import { userNameLabel } from "@/util/labels";
 import { useState } from "react";
 import { H1, Copy, Title } from "./copy";
 import { PatientOpeningTile } from "./patient-opening-tile";
 import { Tile, TileVariant } from "./tile";
 import { Icon } from "./icon";
-import { RiArrowLeftSLine, RiArrowRightSLine, RiCloseLine } from "@remixicon/react";
+import { RiArrowRightSLine, RiCloseLine } from "@remixicon/react";
 import { ButtonVariant, IconButton } from "./button";
 
 type SelectPatientViewProps = {
@@ -16,11 +16,14 @@ type SelectPatientViewProps = {
 };
 
 type SelectedPatientViewProps = {
+  actionId: string;
   patient: ActionDataPatient;
+  handleReject: (patientId: string, opening: ActionDataOpening) => void;
   close?: () => void;
 };
 
 export type PatientsOpeningsViewProps = {
+  actionId: string;
   action: OpeningMatchDataForTel;
 };
 
@@ -58,7 +61,7 @@ const SelectPatientView: React.FC<SelectPatientViewProps> = ({ patients, select 
   </div>
 );
 
-const SelectedPatientView: React.FC<SelectedPatientViewProps> = ({ patient, close }) => (
+const SelectedPatientView: React.FC<SelectedPatientViewProps> = ({ actionId, patient, handleReject, close }) => (
   <div className="flex flex-col gap-4">
     <div className="flex flex-col">
       <div className="flex flex-row items-center justify-between">
@@ -75,12 +78,12 @@ const SelectedPatientView: React.FC<SelectedPatientViewProps> = ({ patient, clos
       </div>
       {patient.openings.length === 0 ? (
         <Copy className="max-w-xl">
-          We don't have any available openings at this time. Rest assured as soon as there is an availability we will send you a text message.
+          We don&#39;t have any available openings at this time. Rest assured as soon as there is an availability we will send you a text message.
         </Copy>
       ) : (
         <Copy className="max-w-xl">
-          We have {patient.openings.length} {patient.openings.length === 1 ? "appointment" : "appointments"} open, take a look to see if any work in
-          your schedule and pick the best match.
+          We have {patient.openings.length} {patient.openings.length === 1 ? "appointment" : "appointments"} available, take a look to see if any work
+          in your schedule and pick the best match.
         </Copy>
       )}
     </div>
@@ -93,15 +96,28 @@ const SelectedPatientView: React.FC<SelectedPatientViewProps> = ({ patient, clos
     ) : (
       <div className="mt-4 flex flex-col gap-2">
         {patient.openings.map((opening, i) => (
-          <PatientOpeningTile key={i} opening={opening} />
+          <PatientOpeningTile key={i} actionId={actionId} patientId={patient.patientId} opening={opening} handleReject={handleReject} />
         ))}
       </div>
     )}
   </div>
 );
 
-export const PatientsOpeningsView: React.FC<PatientsOpeningsViewProps> = ({ action }) => {
+export const PatientsOpeningsView: React.FC<PatientsOpeningsViewProps> = ({ actionId, action }) => {
+  const [patients, setPatients] = useState<ActionDataPatient[]>(action.patients);
   const [selectedPatient, setSelectedPatient] = useState<ActionDataPatient | undefined>(onlyIfOnePatient(action));
+
+  const handleReject = (patientId: string, opening: ActionDataOpening) => {
+    setPatients((patients) => {
+      return patients.map((patient) => {
+        if (patient.patientId === patientId) {
+          patient.openings = patient.openings.filter((o) => o.openingId !== opening.openingId);
+        }
+
+        return { ...patient };
+      });
+    });
+  };
 
   const handleSelect = (patient: ActionDataPatient) => {
     setSelectedPatient(patient);
@@ -112,8 +128,13 @@ export const PatientsOpeningsView: React.FC<PatientsOpeningsViewProps> = ({ acti
   };
 
   return selectedPatient ? (
-    <SelectedPatientView patient={selectedPatient} close={!isOnePatient(action) ? handleClose : undefined} />
+    <SelectedPatientView
+      actionId={actionId}
+      patient={selectedPatient}
+      close={!isOnePatient(action) ? handleClose : undefined}
+      handleReject={handleReject}
+    />
   ) : (
-    <SelectPatientView patients={action.patients} select={handleSelect} />
+    <SelectPatientView patients={patients} select={handleSelect} />
   );
 };

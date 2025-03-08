@@ -19,16 +19,15 @@ export enum ButtonVariant {
 export type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
   variant?: ButtonVariant;
   tooltip?: React.ReactNode;
-  large?: boolean;
   loading?: boolean;
 };
 
 export type ToggleButtonProps = ButtonProps & { selected?: boolean };
 
-export const Button: React.FC<ButtonProps> = ({ className, variant = ButtonVariant.Plain, large, disabled, children, loading, ...props }) => (
+export const Button: React.FC<ButtonProps> = ({ className, variant = ButtonVariant.Plain, disabled, children, loading, ...props }) => (
   <button
     className={classFilter(
-      "w-fit rounded-full text-center outline-none transition-all",
+      "min-h-8 w-fit min-w-8 rounded-full px-6 py-2 text-center outline-none transition-all",
       {
         [ButtonVariant.Gray]: "border border-solid border-outline-soft bg-grey hover:border-outline hover:bg-hover",
         [ButtonVariant.Soft]: "border border-solid border-outline-soft bg-contrast-primary/5 hover:border-outline hover:bg-hover",
@@ -38,7 +37,6 @@ export const Button: React.FC<ButtonProps> = ({ className, variant = ButtonVaria
         [ButtonVariant.Contrast]: "border border-solid border-outline-soft bg-base-tone text-base-color hover:border-outline hover:bg-base-tone/90",
         [ButtonVariant.Warning]: "border border-solid border-outline-soft bg-error text-error-tone hover:border-outline hover:bg-error/90",
       }[variant],
-      large ? "min-h-[2.25rem] min-w-[2.25rem] px-4 py-2" : "min-h-[2rem] min-w-[2rem] px-6 py-2",
       disabled && "pointer-events-none opacity-60",
       loading && "pointer-events-none",
       className,
@@ -69,7 +67,6 @@ export const Button: React.FC<ButtonProps> = ({ className, variant = ButtonVaria
 export const ToggleButton: React.FC<ToggleButtonProps> = ({
   className,
   variant = ButtonVariant.Plain,
-  large,
   selected,
   disabled,
   children,
@@ -78,7 +75,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
 }) => (
   <button
     className={classFilter(
-      "flex aspect-square items-center justify-center rounded-md text-center transition-all",
+      "flex aspect-square min-h-8 min-w-8 items-center justify-center rounded-md p-2 text-center transition-all",
       {
         [ButtonVariant.Gray]: "border border-solid border-outline-soft bg-grey hover:border-outline hover:bg-hover",
         [ButtonVariant.Soft]: "border border-solid border-outline-soft bg-contrast-primary/5 hover:border-outline hover:bg-hover",
@@ -88,7 +85,6 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
         [ButtonVariant.Contrast]: "border border-solid border-outline-soft bg-base-tone text-base-color hover:border-outline hover:bg-base-tone/90",
         [ButtonVariant.Warning]: "border border-solid border-outline-soft bg-error text-error-tone hover:border-outline hover:bg-error/90",
       }[variant],
-      large ? "min-h-[2.5rem] min-w-[2.5rem] px-4 py-2" : "min-h-[2rem] min-w-[2rem] px-4 py-1",
       selected && "bg-primary text-primary-contrast",
       disabled && "pointer-events-none opacity-60",
       loading && "pointer-events-none",

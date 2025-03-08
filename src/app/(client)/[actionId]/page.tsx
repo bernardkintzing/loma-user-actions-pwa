@@ -2,7 +2,7 @@ import { Copy, Title } from "@/components/copy";
 import { PatientsOpeningsView } from "@/components/patient-match-view";
 import { getActionCallable } from "@/lib/callables/action";
 
-export const dynamicParams = false;
+export const fetchCache = "force-no-store";
 
 type PageProps = {
   params: Promise<{ actionId: string }>;
@@ -21,5 +21,5 @@ export default async function Page({ params }: PageProps) {
     );
   }
 
-  return <PatientsOpeningsView action={response.data.action} />;
+  return <PatientsOpeningsView actionId={actionId} action={response.data.action} />;
 }

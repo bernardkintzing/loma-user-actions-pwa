@@ -2,6 +2,7 @@ import { Metadata, Viewport } from "next";
 import { ReactNode, Suspense } from "react";
 
 import "./globals.css";
+import { NotificationPanel } from "@/components/notification";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -23,6 +24,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body>
         <Suspense fallback={null}>{children}</Suspense>
+        <NotificationPanel />
       </body>
     </html>
   );
