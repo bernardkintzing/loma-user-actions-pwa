@@ -28,14 +28,22 @@ export type ActionDataOpening = {
   organization: ActionDataOrganization;
 };
 
+export type ActionDataWaitlistEntry = {
+  entryId: string;
+  datetime: SimpleTimestamp;
+  organization: ActionDataOrganization;
+};
+
 export type ActionDataPatient = {
   patientId: string;
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
+  organization: ActionDataOrganization;
   openings: ActionDataOpening[];
+  waitlistEntries: ActionDataWaitlistEntry[];
 };
 
-export type OpeningMatchDataForTel = {
+export type ManageTelPatientsData = {
   patients: ActionDataPatient[];
 };

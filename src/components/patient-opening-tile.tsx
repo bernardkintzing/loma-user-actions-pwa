@@ -57,7 +57,7 @@ export const PatientOpeningTile: React.FC<PatientOpeningTileProps> = ({ actionId
       .catch(() => {
         notification.error({
           title: "Failed to confirm appointment availability",
-          message: `An error occurred while confirming your availability. Please try again later.`,
+          message: "An error occurred while confirming your availability. Please try again later.",
         });
       })
       .finally(() => {
@@ -100,15 +100,15 @@ export const PatientOpeningTile: React.FC<PatientOpeningTileProps> = ({ actionId
       transition={{ duration: 0.5 }}
     >
       <Tile variant={TileVariant.Outlined} className="flex flex-col gap-2 p-0">
-        <div className="flex flex-row items-center gap-4 p-4">
+        <div className="flex flex-col items-center gap-4 p-4 md:flex-row">
           <ProfileImage
             alt={`${opening.organization.name || "Office"} Profile Image`}
             src={opening.organization.profileImage?.url}
             className="h-10 w-10"
           />
-          <div className="flex flex-col">
-            <Title>{opening.organization.name}</Title>
-            <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-col gap-2 md:gap-0">
+            <Title className="text-center md:text-left">{opening.organization.name}</Title>
+            <div className="flex flex-col items-center gap-2 md:flex-row md:gap-4">
               {opening.organization.email ? (
                 <div className="flex flex-row items-center gap-1">
                   <Icon icon={RiMailLine} className="h-4 w-4" />
@@ -125,7 +125,7 @@ export const PatientOpeningTile: React.FC<PatientOpeningTileProps> = ({ actionId
           </div>
         </div>
         <Tile variant={TileVariant.Filled} className="flex flex-col gap-6 border-0">
-          <Tile className="flex flex-col gap-2 py-0 shadow-none">
+          <Tile className="flex flex-col gap-2 md:py-0 shadow-none">
             <DetailListItem label="Date" item={expandedDateString(opening.datetime)} />
             <DetailListItem label="Duration" item={durationLabel(opening.duration)} />
             <DetailListItem
