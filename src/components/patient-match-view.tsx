@@ -1,14 +1,16 @@
 "use client";
 
-import { ActionDataOpening, ActionDataPatient, OpeningMatchDataForTel } from "@/types/action";
-import { userNameLabel } from "@/util/labels";
-import { useState } from "react";
+import { ActionDataOpening, ActionDataPatient, ActionDataWaitlistEntry, ManageTelPatientsData } from "@/types/action";
+import { phoneNumberLabel, userNameLabel } from "@/util/labels";
+import { Fragment, useState } from "react";
 import { H1, Copy, Title } from "./copy";
 import { PatientOpeningTile } from "./patient-opening-tile";
 import { Tile, TileVariant } from "./tile";
 import { Icon } from "./icon";
 import { RiArrowRightSLine, RiCloseLine } from "@remixicon/react";
 import { ButtonVariant, IconButton } from "./button";
+import Link from "next/link";
+import { PatientWaitlistEntryTile } from "./patient-waitlist-tile";
 
 type SelectPatientViewProps = {
   patients: ActionDataPatient[];
@@ -18,20 +20,21 @@ type SelectPatientViewProps = {
 type SelectedPatientViewProps = {
   actionId: string;
   patient: ActionDataPatient;
-  handleReject: (patientId: string, opening: ActionDataOpening) => void;
+  handleAppointmentRejection: (patientId: string, opening: ActionDataOpening) => void;
+  handleWaitlistRemoval: (patientId: string, entry: ActionDataWaitlistEntry) => void;
   close?: () => void;
 };
 
 export type PatientsOpeningsViewProps = {
   actionId: string;
-  action: OpeningMatchDataForTel;
+  action: ManageTelPatientsData;
 };
 
-const isOnePatient = (action: OpeningMatchDataForTel): boolean => {
+const isOnePatient = (action: ManageTelPatientsData): boolean => {
   return action.patients.length === 1;
 };
 
-const onlyIfOnePatient = (action: OpeningMatchDataForTel): ActionDataPatient | undefined => {
+const onlyIfOnePatient = (action: ManageTelPatientsData): ActionDataPatient | undefined => {
   return isOnePatient(action) ? action.patients[0] : undefined;
 };
 
@@ -61,7 +64,7 @@ const SelectPatientView: React.FC<SelectPatientViewProps> = ({ patients, select 
   </div>
 );
 
-const SelectedPatientView: React.FC<SelectedPatientViewProps> = ({ actionId, patient, handleReject, close }) => (
+const SelectedPatientView: React.FC<SelectedPatientViewProps> = ({ actionId, patient, handleAppointmentRejection, handleWaitlistRemoval, close }) => (
   <div className="flex flex-col gap-4">
     <div className="flex flex-col">
       <div className="flex flex-row items-center justify-between">
@@ -89,14 +92,41 @@ const SelectedPatientView: React.FC<SelectedPatientViewProps> = ({ actionId, pat
     </div>
 
     {patient.openings.length === 0 ? (
-      <Tile variant={TileVariant.Outlined} className="flex flex-col items-center justify-center border-dashed p-12">
+      <Tile variant={TileVariant.Outlined} className="flex flex-col items-center justify-center border-dashed p-4">
         <Title className="text-center">No Available Appointments</Title>
         <Copy className="text-center">Check back soon for new openings</Copy>
       </Tile>
     ) : (
       <div className="mt-4 flex flex-col gap-2">
+        <Title>Appointments</Title>
         {patient.openings.map((opening, i) => (
-          <PatientOpeningTile key={i} actionId={actionId} patientId={patient.patientId} opening={opening} handleReject={handleReject} />
+          <PatientOpeningTile key={i} actionId={actionId} patientId={patient.patientId} opening={opening} handleReject={handleAppointmentRejection} />
+        ))}
+      </div>
+    )}
+    {patient.waitlistEntries.length === 0 ? (
+      <Tile variant={TileVariant.Outlined} className="flex flex-col items-center justify-center border-dashed p-4">
+        <Title className="text-center">{patient.organization.name ? `${patient.organization.name} ` : ""}Waitlist</Title>
+        <Copy className="max-w-lg text-center">
+          You are not currently on the waitlist at {patient.organization.name || "your dentist"}. If you would like to be added to the waitlist,
+          please contact the office directly
+          {patient.organization.phoneNumber ? (
+            <Fragment>
+              {" "}
+              at{" "}
+              <Link className="text-primary hover:underline" href={`tel:${patient.organization.phoneNumber}`}>
+                {phoneNumberLabel(patient.organization.phoneNumber)}
+              </Link>
+            </Fragment>
+          ) : null}
+          .
+        </Copy>
+      </Tile>
+    ) : (
+      <div className="mt-4 flex flex-col gap-2">
+        <Title>Waitlisted Appointments</Title>
+        {patient.waitlistEntries.map((entry, i) => (
+          <PatientWaitlistEntryTile key={i} actionId={actionId} patientId={patient.patientId} entry={entry} handleRemoval={handleWaitlistRemoval} />
         ))}
       </div>
     )}
@@ -107,11 +137,23 @@ export const PatientsOpeningsView: React.FC<PatientsOpeningsViewProps> = ({ acti
   const [patients, setPatients] = useState<ActionDataPatient[]>(action.patients);
   const [selectedPatient, setSelectedPatient] = useState<ActionDataPatient | undefined>(onlyIfOnePatient(action));
 
-  const handleReject = (patientId: string, opening: ActionDataOpening) => {
+  const handleAppointmentRejection = (patientId: string, opening: ActionDataOpening) => {
     setPatients((patients) => {
       return patients.map((patient) => {
         if (patient.patientId === patientId) {
           patient.openings = patient.openings.filter((o) => o.openingId !== opening.openingId);
+        }
+
+        return { ...patient };
+      });
+    });
+  };
+
+  const handleWaitlistRemoval = (patientId: string, entry: ActionDataWaitlistEntry) => {
+    setPatients((patients) => {
+      return patients.map((patient) => {
+        if (patient.patientId === patientId) {
+          patient.waitlistEntries = patient.waitlistEntries.filter((e) => e.entryId !== entry.entryId);
         }
 
         return { ...patient };
@@ -132,7 +174,8 @@ export const PatientsOpeningsView: React.FC<PatientsOpeningsViewProps> = ({ acti
       actionId={actionId}
       patient={selectedPatient}
       close={!isOnePatient(action) ? handleClose : undefined}
-      handleReject={handleReject}
+      handleAppointmentRejection={handleAppointmentRejection}
+      handleWaitlistRemoval={handleWaitlistRemoval}
     />
   ) : (
     <SelectPatientView patients={patients} select={handleSelect} />

@@ -7,6 +7,7 @@ import { Copy } from "./copy";
 import { useMobileBreakpoint } from "@/hooks/use-breakpoint";
 import { useEffect, useState } from "react";
 import { listenToNotificationEvent } from "@/util/notification";
+import { ClientSideRender } from "./client-side-render";
 
 type NotificationContainerProps = {
   notification: Notification;
@@ -77,16 +78,18 @@ export const NotificationPanel: React.FC = () => {
   };
 
   return (
-    <div
-      id="notification-panel"
-      className={classFilter(
-        "fixed z-alert flex h-fit flex-col gap-2",
-        isMobile ? "left-1/2 top-2 box-border w-full -translate-x-1/2 px-2" : "bottom-2 right-2",
-      )}
-    >
-      {notifications.map((notification, i) => (
-        <NotificationContainer key={i} notification={notification} />
-      ))}
-    </div>
+    <ClientSideRender>
+      <div
+        id="notification-panel"
+        className={classFilter(
+          "fixed z-alert flex h-fit flex-col gap-2",
+          isMobile ? "left-1/2 top-2 box-border w-full -translate-x-1/2 px-2" : "bottom-2 right-2",
+        )}
+      >
+        {notifications.map((notification, i) => (
+          <NotificationContainer key={i} notification={notification} />
+        ))}
+      </div>
+    </ClientSideRender>
   );
 };

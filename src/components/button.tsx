@@ -31,7 +31,7 @@ export const Button: React.FC<ButtonProps> = ({ className, variant = ButtonVaria
       {
         [ButtonVariant.Gray]: "border border-solid border-outline-soft bg-grey hover:border-outline hover:bg-hover",
         [ButtonVariant.Soft]: "border border-solid border-outline-soft bg-contrast-primary/5 hover:border-outline hover:bg-hover",
-        [ButtonVariant.Filled]: "border border-solid border-outline-soft bg-primary text-primary-tone hover:border-outline hover:bg-primary/90",
+        [ButtonVariant.Filled]: "border border-solid border-outline-soft bg-primary text-primary-contrast hover:border-outline hover:bg-primary/90",
         [ButtonVariant.Outlined]: "border border-solid border-outline-soft hover:border-outline hover:bg-hover-soft",
         [ButtonVariant.Plain]: "",
         [ButtonVariant.Contrast]: "border border-solid border-outline-soft bg-base-tone text-base-color hover:border-outline hover:bg-base-tone/90",
