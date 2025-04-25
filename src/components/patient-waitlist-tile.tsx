@@ -4,7 +4,7 @@ import { Tile, TileVariant } from "./tile";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ProfileImage } from "./profile";
-import { phoneNumberLabel } from "@/util/labels";
+import { expandedDateString, phoneNumberLabel } from "@/util/labels";
 import { RiMailLine, RiPhoneLine } from "@remixicon/react";
 import { Title, Copy } from "./copy";
 import { Icon } from "./icon";
@@ -87,7 +87,7 @@ export const PatientWaitlistEntryTile: React.FC<PatientWaitlistEntryTileProps> =
           </div>
         </div>
         <Tile variant={TileVariant.Filled} className="flex flex-col gap-6 border-0">
-          <Copy>You are currently on the waitlist to replace your appointment on {new Date(entry.datetime._seconds * 1000).toString()}.</Copy>
+          <Copy>You are currently on the waitlist to replace your appointment on {expandedDateString(entry.datetime)}.</Copy>
           <Copy>If you are no longer interested in an earlier appointment, you can remove yourself from the waitlist.</Copy>
           <Button onClick={closeEntry} variant={ButtonVariant.Filled} className="w-full" loading={closing}>
             Remove Appointment
